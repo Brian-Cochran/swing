@@ -53,17 +53,6 @@ public class Vector4D {
         return new Vector4D(newX, newY, newZ);
     } // crossProduct(Vector4D)
     
-//    public Vector4D matrixVectorMultiplication(Matrix4x4 m) {
-//        double value = 0.0;
-//        for (int row = 0; row < 4; row++) {
-//            for (int column = 0; column < 4; column++) {
-//                value+= this.get(column) * m.get(row, column);
-//            } // for
-//            this.set(row, value);
-//        } // for
-//        return this;
-//    } // matrixVectorMultiplication(Vector4D, Matrix4x4)
-    
     @Override
     public String toString() {
         return "(" + get(0) + ", " + get(1) + ", " + get(2) + ", " + get(3) + ")";
