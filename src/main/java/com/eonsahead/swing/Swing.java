@@ -18,12 +18,12 @@ public class Swing extends JFrame implements ActionListener {
     private final int FRAME_WIDTH = 512;
     private final int FRAME_HEIGHT = 512;
     private final String FRAME_TITLE = "Swing";
-    private final int NUMBER_OF_COLORS = 8;
+    private static final int NUMBER_OF_COLORS = 3;
     private final String BG_COLOR = "Background Color";
     private final String FG_COLOR = "Foreground Color";
 
-    private final List<Color> bgPalette = new ArrayList<>();
-    private final List<Color> fgPalette = new ArrayList<>();
+    private static final List<Color> bgPalette = new ArrayList<>();
+    private static final List<Color> fgPalette = new ArrayList<>();
     private final SwingPanel panel;
 
     public Swing() {
@@ -37,9 +37,9 @@ public class Swing extends JFrame implements ActionListener {
 
         Random rng = new Random();
         for (int i = 0; i < NUMBER_OF_COLORS; i++) {
-            int red = 64 + rng.nextInt(128);
-            int green = 64 + rng.nextInt(128);
-            int blue = 64 + rng.nextInt(128);
+            int red = 128 + rng.nextInt(128);
+            int green = 128 + rng.nextInt(128);
+            int blue = 128 + rng.nextInt(128);
             Color color = new Color(red, green, blue);
             bgPalette.add(color);
         } // for
@@ -53,7 +53,7 @@ public class Swing extends JFrame implements ActionListener {
             fgPalette.add(color);
         } // for
         this.panel.setColor(fgPalette.get(0));
-        
+
         JMenuBar menuBar = new JMenuBar();
         this.setJMenuBar(menuBar);
 
@@ -79,6 +79,12 @@ public class Swing extends JFrame implements ActionListener {
             fgColorMenu.add(item);
         } // for
 
+        JMenu randomColorsMenu = new JMenu("Random");
+        menuBar.add(randomColorsMenu);
+        randomColorsMenu.add("Random Background Color");
+        randomColorsMenu.add("Random Foreground Color");
+        randomColorsMenu.add("Randomize All");
+
         this.setVisible(true);
     } // Swing()
 
@@ -97,7 +103,13 @@ public class Swing extends JFrame implements ActionListener {
             String suffix = actionCommand.substring(i).trim();
             int index = Integer.parseInt(suffix);
             this.panel.setColor(fgPalette.get(index));
-        } // if
+        } // else if
+        else if (actionCommand.indexOf("Random") >= 0) {
+            int i = "Random".length();
+            String suffix = actionCommand.substring(i).trim();
+            int index = Integer.parseInt(suffix);
+            this.panel.setColor(fgPalette.get(index));
+        } // else if
     } // actionPerformed( ActionEvent )
 
     public static void main(String[] args) {
