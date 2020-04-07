@@ -22,7 +22,7 @@ public class Vector4D {
     /**
      * 
      * Initializes a 4D vector using parameters.
-     * 
+     * <p>
      * Sets x, y, and z according to parameters and sets last value to 1.
      * 
      * @param x value to be placed in first spot
@@ -76,7 +76,7 @@ public class Vector4D {
     /**
      * 
      * Calculates magnitude of a 4D vector.
-     * 
+     * <p>
      * Uses dot product method to calculate the magnitude.
      * 
      * @return magnitude of 4D vector (double)
@@ -88,7 +88,7 @@ public class Vector4D {
     /**
      * 
      * Creates a new vector of magnitude 1 with a specific direction.
-     * 
+     * <p>
      * Takes direction of a 4D vector and sets the magnitude to 1 to create a new 4D vector.
      * 
      * @return 4D vector with magnitude of 1
@@ -107,7 +107,7 @@ public class Vector4D {
     /**
      * 
      * Calculates the cross product of two 4D vectors.
-     * 
+     * <p>
      * Only uses first three spots of both vectors.
      * 
      * @param v 4D vector to be multiplied
