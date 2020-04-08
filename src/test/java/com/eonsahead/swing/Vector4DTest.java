@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  *
  * @author Brian Cochran
+ * @version 4/7/2020
  */
 public class Vector4DTest {
     
@@ -92,31 +93,4 @@ public class Vector4DTest {
             assertEquals(expResult.get(i), result.get(i), EPSILON);
         } // for
     } // testCrossProduct()
-
-    /**
-     * Test of toString method, of class Vector4D.
-     */
-//    @Test
-//    public void testToString() {
-//        System.out.println("toString");
-//        Vector4D instance = new Vector4D();
-//        String expResult = "";
-//        String result = instance.toString();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-
-    /**
-     * Test of main method, of class Vector4D.
-     */
-//    @Test
-//    public void testMain() {
-//        System.out.println("main");
-//        String[] args = null;
-//        Vector4D.main(args);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-    
 } //Vector4DTest
