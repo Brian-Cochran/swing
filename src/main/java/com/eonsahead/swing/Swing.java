@@ -22,6 +22,7 @@ public class Swing extends JFrame implements ActionListener {
     private final String BG_COLOR = "Background Color";
     private final String FG_COLOR = "Foreground Color";
     private final Color DEFAULT_BG = new Color(255, 255, 255);
+    private final Color DEFAULT_FG = new Color(255, 0, 0);
 
     private static final List<Color> bgPalette = new ArrayList<>();
     private static final List<Color> fgPalette = new ArrayList<>();
@@ -37,6 +38,7 @@ public class Swing extends JFrame implements ActionListener {
         pane.add(panel);
         
         bgPalette.add(DEFAULT_BG);
+        fgPalette.add(DEFAULT_FG);
         Random rng = new Random();
         for (int i = 1; i < NUMBER_OF_COLORS; i++) {
             int red = 128 + rng.nextInt(128);
@@ -47,7 +49,7 @@ public class Swing extends JFrame implements ActionListener {
         } // for
         this.panel.setBackground(bgPalette.get(0));
 
-        for (int i = 0; i < NUMBER_OF_COLORS; i++) {
+        for (int i = 1; i < NUMBER_OF_COLORS; i++) {
             int red = 32 + rng.nextInt(224);
             int green = 32 + rng.nextInt(224);
             int blue = 32 + rng.nextInt(224);
