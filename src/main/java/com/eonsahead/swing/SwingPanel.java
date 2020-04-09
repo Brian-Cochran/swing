@@ -32,6 +32,7 @@ public class SwingPanel extends JPanel implements ActionListener {
     private Matrix4x4 spinner;
     private List<Shape> shapes;
     private Shape rect;
+    private List<Rectangle> rectangles;
 
     public SwingPanel() {
         Timer timer = new Timer(20, this);
@@ -45,15 +46,15 @@ public class SwingPanel extends JPanel implements ActionListener {
 //        this.shape = makeStar(p, x, y, r0, r1);
         this.poly1 = new Polygon3D(9, 0.6, 0);
         this.poly2 = new Polygon3D(9, 0.6, 0.5);
-        
+
         Matrix4x4 a = new Matrix4x4();
-        a.rotationX(Math.PI / 100);
+        a.rotationX(Math.PI / 1 * 0);
 
         Matrix4x4 b = new Matrix4x4();
         b.rotationY(Math.PI / 100);
 
         Matrix4x4 c = new Matrix4x4();
-        c.rotationZ(Math.PI / 100);
+        c.rotationZ(Math.PI / 100 * 0);
 
         this.spinner = a.multiply(b).multiply(c);
     } // SwingPanel()
@@ -95,32 +96,41 @@ public class SwingPanel extends JPanel implements ActionListener {
         transform1.concatenate(scaling);
         transform1.concatenate(translation1);
         transform1.concatenate(rotation);
-        
+
         transform2.concatenate(scaling);
         transform2.concatenate(translation2);
         transform2.concatenate(rotation);
-        
+
         this.shape1 = poly1.getShape();
         this.shape2 = poly2.getShape();
 
         Shape s1 = transform1.createTransformedShape(this.shape1);
         Shape s2 = transform2.createTransformedShape(this.shape2);
-        
-        //Rectangle r = new Rectangle(poly2, poly1, 0);
-        //Shape shape3 = r.getShape();
-        //Shape s3 = transform1.createTransformedShape(shape3);
-        
-        g2D.setColor(this.getColor());
-        g2D.fill(s1);
-        g2D.fill(s2);
-        //g2D.draw(s3);
-        
-        for (int side = 0; side < poly1.getSize(); side++) {
-            Rectangle r = new Rectangle(poly1, poly2, side);
-            Shape rectShape = r.getShape();
-            g2D.fill(transform1.createTransformedShape(rectShape));
-        } // for
-        
+
+        if (poly1.getMinZ() < poly2.getMinZ()) {
+            g2D.setColor(this.getColor());
+            g2D.fill(s1);
+            for (int side = 0; side < poly1.getSize() + 1; side++) {
+                Rectangle r = new Rectangle(poly1, poly2, side);
+                Shape rectShape = r.getShape();
+                g2D.setColor(Color.green);
+                g2D.fill(transform1.createTransformedShape(rectShape));
+            } // for
+            g2D.setColor(Color.blue);
+            g2D.fill(s2);
+        } // if
+        else {
+            g2D.setColor(Color.blue);
+            g2D.fill(s2);
+            for (int side = 0; side < poly1.getSize() + 1; side++) {
+                Rectangle r = new Rectangle(poly1, poly2, side);
+                Shape rectShape = r.getShape();
+                g2D.setColor(Color.green);
+                g2D.fill(transform1.createTransformedShape(rectShape));
+            } // for
+            g2D.setColor(this.getColor());
+            g2D.fill(s1);
+        } // else
     } // paintComponent( Graphics )
 
     @Override
