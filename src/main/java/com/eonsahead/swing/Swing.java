@@ -21,6 +21,7 @@ public class Swing extends JFrame implements ActionListener {
     private static final int NUMBER_OF_COLORS = 3;
     private final String BG_COLOR = "Background Color";
     private final String FG_COLOR = "Foreground Color";
+    private final Color DEFAULT_BG = new Color(255, 255, 255);
 
     private static final List<Color> bgPalette = new ArrayList<>();
     private static final List<Color> fgPalette = new ArrayList<>();
@@ -34,9 +35,10 @@ public class Swing extends JFrame implements ActionListener {
         Container pane = this.getContentPane();
         this.panel = new SwingPanel();
         pane.add(panel);
-
+        
+        bgPalette.add(DEFAULT_BG);
         Random rng = new Random();
-        for (int i = 0; i < NUMBER_OF_COLORS; i++) {
+        for (int i = 1; i < NUMBER_OF_COLORS; i++) {
             int red = 128 + rng.nextInt(128);
             int green = 128 + rng.nextInt(128);
             int blue = 128 + rng.nextInt(128);
@@ -79,12 +81,6 @@ public class Swing extends JFrame implements ActionListener {
             fgColorMenu.add(item);
         } // for
 
-        JMenu randomColorsMenu = new JMenu("Random");
-        menuBar.add(randomColorsMenu);
-        randomColorsMenu.add("Random Background Color");
-        randomColorsMenu.add("Random Foreground Color");
-        randomColorsMenu.add("Randomize All");
-
         this.setVisible(true);
     } // Swing()
 
@@ -104,16 +100,9 @@ public class Swing extends JFrame implements ActionListener {
             int index = Integer.parseInt(suffix);
             this.panel.setColor(fgPalette.get(index));
         } // else if
-        else if (actionCommand.indexOf("Random") >= 0) {
-            int i = "Random".length();
-            String suffix = actionCommand.substring(i).trim();
-            int index = Integer.parseInt(suffix);
-            this.panel.setColor(fgPalette.get(index));
-        } // else if
     } // actionPerformed( ActionEvent )
 
     public static void main(String[] args) {
         Swing swing = new Swing();
     } // main( String [] )
-
 } // Swing
