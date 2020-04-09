@@ -47,14 +47,4 @@ public class Rectangle {
     public Vector4D getVertex(int vertex) {
         return this.vertices.get(vertex);
     } // getVertex(int)
-    
-    public double getMinZ() {
-        double minZ = this.getVertex(0).get(2);
-        for (int vertex = 1; vertex < 4; vertex++) {
-            if (this.getVertex(vertex).get(2) < minZ) {
-                minZ = this.getVertex(vertex).get(2);
-            } // if
-        } // for
-        return minZ;
-    } // getMinZ()
 } // Rectangle
