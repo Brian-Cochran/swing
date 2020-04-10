@@ -47,4 +47,16 @@ public class Rectangle {
     public Vector4D getVertex(int vertex) {
         return this.vertices.get(vertex);
     } // getVertex(int)
+    
+    public Vector4D getNormalFront() {
+        Vector4D temp1 = (this.getVertex(2).add(this.getVertex(1).getNegative()));
+        Vector4D temp2 = (this.getVertex(0).add(this.getVertex(1).getNegative()));
+        return temp1.crossProduct(temp2);
+    } // getNormalFront()
+    
+    public Vector4D getNormalBack() {
+        Vector4D temp1 = (this.getVertex(2).add(this.getVertex(3).getNegative()));
+        Vector4D temp2 = (this.getVertex(0).add(this.getVertex(3).getNegative()));
+        return temp1.crossProduct(temp2);
+    } // getNormalBack()
 } // Rectangle
