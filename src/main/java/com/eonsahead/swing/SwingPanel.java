@@ -13,14 +13,13 @@ import javax.swing.Timer;
 
 public class SwingPanel extends JPanel implements ActionListener {
 
-    private double phase = 0.0;
-    private double ambient = 0.5;
+    private final double ambient = 0.5;
     private Color color = new Color(0, 255, 100);
     private final Matrix4x4 spinner;
     private final Vector4D illumination;
-    private Polygon3D polyTop;
-    private Polygon3D polyBottom;
-    private int NUM_SIDES = 50;
+    private final Polygon3D polyTop;
+    private final Polygon3D polyBottom;
+    private final int NUM_SIDES = 50;
 
     public SwingPanel() {
         Timer timer = new Timer(20, this);
@@ -116,7 +115,6 @@ public class SwingPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        //this.prism.transform(spinner);
         this.polyTop.transform(spinner);
         this.polyBottom.transform(spinner);
         this.repaint();
