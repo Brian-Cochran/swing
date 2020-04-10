@@ -44,6 +44,10 @@ public class Rectangle {
         return path;
     } // getShape()
     
+    public List<Vector4D> getVertices() {
+        return this.vertices;
+    } // getVertices()
+    
     public Vector4D getVertex(int vertex) {
         return this.vertices.get(vertex);
     } // getVertex(int)
