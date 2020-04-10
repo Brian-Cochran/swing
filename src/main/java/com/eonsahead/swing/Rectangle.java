@@ -48,15 +48,29 @@ public class Rectangle {
         return this.vertices.get(vertex);
     } // getVertex(int)
     
-    public Vector4D getNormalFront() {
-        Vector4D temp1 = (this.getVertex(2).add(this.getVertex(1).getNegative()));
-        Vector4D temp2 = (this.getVertex(0).add(this.getVertex(1).getNegative()));
-        return temp1.crossProduct(temp2);
-    } // getNormalFront()
+    public Vector4D getNormal() {
+        Vector4D v0 = this.getVertex(0);
+        Vector4D v1 = this.getVertex(1);
+        Vector4D v2 = this.getVertex(2);
+        Vector4D v3 = v2.add(v1.getNegative());
+        Vector4D v4 = v0.add(v1.getNegative());
+        Vector4D result = v3.crossProduct(v4);
+        return result.normalize();
+    } // getNormal()
     
-    public Vector4D getNormalBack() {
-        Vector4D temp1 = (this.getVertex(2).add(this.getVertex(3).getNegative()));
-        Vector4D temp2 = (this.getVertex(0).add(this.getVertex(3).getNegative()));
-        return temp1.crossProduct(temp2);
-    } // getNormalBack()
+    public double getMinZ() {
+        double minZ = this.getVertex(0).get(2);
+        for (int i = 1; i < 4; i++) {
+            if (this.getVertex(i).get(2) < minZ) {
+                minZ = this.getVertex(i).get(2);
+            } // if
+        } // for
+        return minZ;
+    } // getMinZ()
+    
+    public void transform(Matrix4x4 m) {
+        for (Vector4D u : this.vertices) {
+            u.set(m.multiply(u));
+        } // for
+    } // transform()
 } // Rectangle
