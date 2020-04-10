@@ -91,7 +91,7 @@ public class Polygon3D {
     /**
      * Draws path of polygon
      * 
-     * @return polygon represented by a shape object
+     * @return polygon represented by a path
      */
     public Shape getShape() {
         GeneralPath path = new GeneralPath();
