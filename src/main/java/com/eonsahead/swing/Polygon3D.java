@@ -13,8 +13,11 @@ import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 
 /**
- *
+ * The Polygon3D class contains methods for creating, transforming, and tracing 
+ * a polygon to be a part of a prism.
+ * 
  * @author Brian Cochran
+ * @version 4/10/2020
  */
 public class Polygon3D {
 
@@ -22,7 +25,18 @@ public class Polygon3D {
     private final int mode;
     public static final int CW = 0;
     public static final int CCW = 1;
-
+    
+    /**
+     * Polygon3D constructor.
+     * <p>
+     * This constructor creates a list of vertices to represent a polygon of any 
+     * size.
+     * 
+     * @param numberOfSides number of sides of polygon
+     * @param radius controls size of polygon
+     * @param z z-coordinate of vertices in polygon
+     * @param mode keeps track of clockwise or counterclockwise creation of normal vector
+     */
     public Polygon3D(int numberOfSides, double radius, double z, int mode) {
         for (int i = 0; i < numberOfSides; i++) {
             double fraction = ((double) i) / numberOfSides;
@@ -34,25 +48,51 @@ public class Polygon3D {
         } // for
         this.mode = mode;
     } // Polygon3D( int, double, double, int )
-
+    
+    /**
+     * Retrieves the size of a polygon according to how many sides it has.
+     * 
+     * @return (int) number of sides of polygon.
+     */
     public int getSize() {
         return this.vertices.size() - 1;
     } // getSize()
-
+    
+    /**
+     * Retrieves the coordinates of a specified vertex
+     * 
+     * @param vertex vertex to be retreived
+     * @return vector representation of vertex
+     */
     public Vector4D getVertex(int vertex) {
         return this.vertices.get(vertex);
     } // getVertex(int)
     
+    /**
+     * Retrieves a polygon's list of vertices
+     * 
+     * @return list of vector representations of vertices
+     */
     public List<Vector4D> getVertices() {
         return this.vertices;
     } // getVertices()
-
+    
+    /**
+     * Transforms vertices according to a 4x4 matrix
+     * 
+     * @param m 4-dimensional matrix
+     */
     public void transform(Matrix4x4 m) {
         for (Vector4D u : this.vertices) {
             u.set(m.multiply(u));
         } // for 
     } // transform( Matrix )
-
+    
+    /**
+     * Draws path of polygon
+     * 
+     * @return polygon represented by a shape object
+     */
     public Shape getShape() {
         GeneralPath path = new GeneralPath();
         Vector4D v = this.vertices.get(0);
@@ -70,6 +110,11 @@ public class Polygon3D {
         return path;
     } // getShape()
     
+    /**
+     * Retrieves the normal vector of a polygon.
+     * 
+     * @return normal vector
+     */
     public Vector4D getNormal() {
         Vector4D v0 = this.getVertex(0);
         Vector4D v1 = this.getVertex(1);
