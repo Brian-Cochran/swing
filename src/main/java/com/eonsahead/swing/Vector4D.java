@@ -58,6 +58,13 @@ public class Vector4D {
         this.elements[row] = value;
     } // set(int, double)
     
+    public void set(Vector4D v) {
+        this.elements[0] = v.elements[0];
+        this.elements[1] = v.elements[1];
+        this.elements[2] = v.elements[2];
+        this.elements[3] = v.elements[3];
+    } // set(Vector4D)
+    
     /**
      * 
      * Calculates dot product of two 4D vectors.
@@ -119,6 +126,20 @@ public class Vector4D {
         double newZ = this.get(0) * v.get(1) - this.get(1) * v.get(0);
         return new Vector4D(newX, newY, newZ);
     } // crossProduct(Vector4D)
+    
+    public Vector4D getNegative() {
+        double newX = this.get(0) * -1;
+        double newY = this.get(1) * -1;
+        double newZ = this.get(2) * -1;
+        return new Vector4D(newX, newY, newZ);
+    } // getNegative()
+    
+    public Vector4D add(Vector4D v) {
+        double newX = this.get(0) + v.get(0);
+        double newY = this.get(1) + v.get(1);
+        double newZ = this.get(2) + v.get(2);
+        return new Vector4D(newX, newY, newZ);
+    } // add(Vector4D)
     
     /**
      * 
