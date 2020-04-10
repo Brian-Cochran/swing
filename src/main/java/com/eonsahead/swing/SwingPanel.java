@@ -29,13 +29,13 @@ public class SwingPanel extends JPanel implements ActionListener {
         this.polyBottom = new Polygon3D(NUM_SIDES, 0.8, -0.5, 1);
 
         Matrix4x4 a = new Matrix4x4();
-        a.rotationX(Math.PI / 100);
+        a.rotationX(Math.PI / 100 * 0);
 
         Matrix4x4 b = new Matrix4x4();
         b.rotationY(Math.PI / 100);
 
         Matrix4x4 c = new Matrix4x4();
-        c.rotationZ(Math.PI / 100);
+        c.rotationZ(Math.PI / 100 * 0);
 
         this.spinner = a.multiply(b).multiply(c);
         this.illumination = (new Vector4D(0, 0, 3)).normalize();
@@ -89,7 +89,6 @@ public class SwingPanel extends JPanel implements ActionListener {
         shape = transform.createTransformedShape(polyTop.getShape());
         normal = polyTop.getNormal();
         if (normal.get(2) > 0) {
-            System.out.println("test");
             double brightness = normal.dotProduct(illumination);
             g2D.setColor(chooseColor(brightness, ambient));
             g2D.fill(shape);
