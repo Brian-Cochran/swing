@@ -27,7 +27,6 @@ public class Polygon3D {
             double y = radius * Math.sin(angle);
             Vector4D v = new Vector4D(x, y, z);
             this.vertices.add(v);
-            System.out.println(this.vertices);
         } // for
     } // Polygon3D( int, double )
     
@@ -74,4 +73,16 @@ public class Polygon3D {
         } // for
         return minZ;
     } // getMinZ()
+    
+    public Vector4D getNormalTop() {
+        Vector4D temp1 = (this.getVertex(2).add(this.getVertex(1).getNegative()));
+        Vector4D temp2 = (this.getVertex(0).add(this.getVertex(1).getNegative()));
+        return temp1.crossProduct(temp2);
+    } // getNormalTop()
+    
+    public Vector4D getNormalBottom() {
+        Vector4D temp1 = (this.getVertex(this.getSize()-2).add(this.getVertex(this.getSize() - 1).getNegative()));
+        Vector4D temp2 = (this.getVertex(0).add(this.getVertex(this.getSize() - 1).getNegative()));
+        return temp1.crossProduct(temp2);
+    } // getNormalBottom()
 } // Polygon3D
