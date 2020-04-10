@@ -17,9 +17,13 @@ import java.awt.geom.GeneralPath;
  * @author Brian Cochran
  */
 public class Polygon3D {
-    private final List<Vector4D> vertices = new ArrayList<>();
 
-    public Polygon3D(int numberOfSides, double radius, double z) {
+    private final List<Vector4D> vertices = new ArrayList<>();
+    private final int mode;
+    public static final int CW = 0;
+    public static final int CCW = 1;
+
+    public Polygon3D(int numberOfSides, double radius, double z, int mode) {
         for (int i = 0; i < numberOfSides; i++) {
             double fraction = ((double) i) / numberOfSides;
             double angle = fraction * 2.0 * Math.PI;
@@ -28,15 +32,69 @@ public class Polygon3D {
             Vector4D v = new Vector4D(x, y, z);
             this.vertices.add(v);
         } // for
-    } // Polygon3D( int, double )
-    
+        this.mode = mode;
+    } // Polygon3D( int, double, double, int )
+
+    public Polygon3D(Vector4D v0, Vector4D v1, Vector4D v2) {
+        this.vertices.add(v0);
+        this.vertices.add(v1);
+        this.vertices.add(v2);
+        this.mode = Polygon3D.CCW;
+    } // Polygon3D(Vector4D, Vector4D, Vector4D)
+
     public int getSize() {
         return this.vertices.size() - 1;
     } // getSize()
-    
+
+    public List<Vector4D> getVertices() {
+        return this.vertices;
+    } // getVertices()
+
     public Vector4D getVertex(int vertex) {
         return this.vertices.get(vertex);
     } // getVertex(int)
+
+    public List<Polygon3D> makeSleeve(Polygon3D poly) {
+        List<Polygon3D> faces = new ArrayList<>();
+        int numSides = this.getVertices().size();
+
+        if (numSides == poly.getVertices().size()) {
+            Vector4D v0;
+            Vector4D v1;
+            Vector4D v2;
+            Polygon3D p;
+
+            List<Vector4D> vertexList1 = this.getVertices();
+            List<Vector4D> vertexList2 = poly.getVertices();
+
+            for (int i = 0; i < numSides - 1; i++) {
+                v0 = vertexList1.get(i);
+                v1 = vertexList2.get(i);
+                v2 = vertexList1.get(i + 1);
+                p = new Polygon3D(v0, v1, v2);
+                faces.add(p);
+
+                v0 = vertexList1.get(i + 1);
+                v1 = vertexList2.get(i);
+                v2 = vertexList2.get(i + 1);
+                p = new Polygon3D(v0, v1, v2);
+                faces.add(p);
+            } // for
+
+            v0 = vertexList1.get(numSides - 1);
+            v1 = vertexList2.get(numSides - 1);
+            v2 = vertexList1.get(0);
+            p = new Polygon3D(v0, v1, v2);
+            faces.add(p);
+
+            v0 = vertexList1.get(0);
+            v1 = vertexList2.get(numSides - 1);
+            v2 = vertexList2.get(0);
+            p = new Polygon3D(v0, v1, v2);
+            faces.add(p);
+        } // if
+        return faces;
+    } // makeSleeve(Polygon3D)
 
     public void transform(Matrix4x4 m) {
         for (Vector4D u : this.vertices) {
@@ -46,7 +104,6 @@ public class Polygon3D {
 
     public Shape getShape() {
         GeneralPath path = new GeneralPath();
-
         Vector4D v = this.vertices.get(0);
         double x = v.get(0);
         double y = v.get(1);
@@ -58,12 +115,10 @@ public class Polygon3D {
             y = v.get(1);
             path.lineTo(x, y);
         } // for
-
         path.closePath();
-
         return path;
     } // getShape()
-    
+
     public double getMinZ() {
         double minZ = this.getVertex(0).get(2);
         for (int vertex = 1; vertex < this.vertices.size(); vertex++) {
@@ -74,15 +129,19 @@ public class Polygon3D {
         return minZ;
     } // getMinZ()
     
-    public Vector4D getNormalTop() {
-        Vector4D temp1 = (this.getVertex(2).add(this.getVertex(1).getNegative()));
-        Vector4D temp2 = (this.getVertex(0).add(this.getVertex(1).getNegative()));
-        return temp1.crossProduct(temp2);
-    } // getNormalTop()
-    
-    public Vector4D getNormalBottom() {
-        Vector4D temp1 = (this.getVertex(this.getSize()-2).add(this.getVertex(this.getSize() - 1).getNegative()));
-        Vector4D temp2 = (this.getVertex(0).add(this.getVertex(this.getSize() - 1).getNegative()));
-        return temp1.crossProduct(temp2);
-    } // getNormalBottom()
+    public Vector4D getNormal() {
+        Vector4D v0 = this.getVertex(0);
+        Vector4D v1 = this.getVertex(1);
+        Vector4D v2 = this.getVertex(2);
+        Vector4D v3 = v2.add(v1.getNegative());
+        Vector4D v4 = v0.add(v1.getNegative());
+        Vector4D result = v3.crossProduct(v4);
+        
+        if (this.mode == Polygon3D.CW) {
+            Matrix4x4 m = new Matrix4x4();
+            m.scale(-1.0, -1.0, -1.0);
+            result = m.multiply(result);
+        } // if
+        return result.normalize();
+    } // getNormal()
 } // Polygon3D
