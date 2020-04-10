@@ -35,66 +35,13 @@ public class Polygon3D {
         this.mode = mode;
     } // Polygon3D( int, double, double, int )
 
-    public Polygon3D(Vector4D v0, Vector4D v1, Vector4D v2) {
-        this.vertices.add(v0);
-        this.vertices.add(v1);
-        this.vertices.add(v2);
-        this.mode = Polygon3D.CCW;
-    } // Polygon3D(Vector4D, Vector4D, Vector4D)
-
     public int getSize() {
         return this.vertices.size() - 1;
     } // getSize()
 
-    public List<Vector4D> getVertices() {
-        return this.vertices;
-    } // getVertices()
-
     public Vector4D getVertex(int vertex) {
         return this.vertices.get(vertex);
     } // getVertex(int)
-
-    public List<Polygon3D> makeSleeve(Polygon3D poly) {
-        List<Polygon3D> faces = new ArrayList<>();
-        int numSides = this.getVertices().size();
-
-        if (numSides == poly.getVertices().size()) {
-            Vector4D v0;
-            Vector4D v1;
-            Vector4D v2;
-            Polygon3D p;
-
-            List<Vector4D> vertexList1 = this.getVertices();
-            List<Vector4D> vertexList2 = poly.getVertices();
-
-            for (int i = 0; i < numSides - 1; i++) {
-                v0 = vertexList1.get(i);
-                v1 = vertexList2.get(i);
-                v2 = vertexList1.get(i + 1);
-                p = new Polygon3D(v0, v1, v2);
-                faces.add(p);
-
-                v0 = vertexList1.get(i + 1);
-                v1 = vertexList2.get(i);
-                v2 = vertexList2.get(i + 1);
-                p = new Polygon3D(v0, v1, v2);
-                faces.add(p);
-            } // for
-
-            v0 = vertexList1.get(numSides - 1);
-            v1 = vertexList2.get(numSides - 1);
-            v2 = vertexList1.get(0);
-            p = new Polygon3D(v0, v1, v2);
-            faces.add(p);
-
-            v0 = vertexList1.get(0);
-            v1 = vertexList2.get(numSides - 1);
-            v2 = vertexList2.get(0);
-            p = new Polygon3D(v0, v1, v2);
-            faces.add(p);
-        } // if
-        return faces;
-    } // makeSleeve(Polygon3D)
 
     public void transform(Matrix4x4 m) {
         for (Vector4D u : this.vertices) {
