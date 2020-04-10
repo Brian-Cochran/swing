@@ -14,6 +14,9 @@ import javax.swing.Timer;
 /**
  * The SwingPanel class contains methods for drawing on and updating the Swing window.
  * 
+ * This class creates a panel to be used by the Swing class window. Shapes are 
+ * drawn and transformed on this panel, which is displayed on the window.
+ * 
  * @author Brian Cochran
  * @version 4/10/2020
  */
@@ -31,7 +34,10 @@ public class SwingPanel extends JPanel implements ActionListener {
     private final int shape = 1;
     
     /**
-     * SwingPanel constructor
+     * SwingPanel constructor.
+     * <p>
+     * This constructor starts a timer and sets the rotation and illumination 
+     * vectors.
      */
     public SwingPanel() {
         Timer timer = new Timer(20, this);
@@ -54,15 +60,38 @@ public class SwingPanel extends JPanel implements ActionListener {
         this.spinner = a.multiply(b).multiply(c);
         this.illumination = (new Vector4D(1, 1, 1)).normalize();
     } // SwingPanel()
-
+    
+    /**
+     * Retrieves the color stored in the color variable.
+     * 
+     * @return Color
+     */
     public Color getColor() {
         return this.color;
     } // getColor()
-
+    
+    /**
+     * Sets the color variable to a specified Color.
+     * 
+     * @param c Color
+     */
     public void setColor(Color c) {
         this.color = c;
     } // setColor( Color )
-
+    
+    /**
+     * Calculates the red, green, and blue values of a color to be applied to a 
+     * face of a prism according brightness and ambient light.
+     * <p>
+     * The brightness of the color is determined by the normal and illumination 
+     * vectors. If the brightness is less than 0 for any face of the prism, that 
+     * face has the red, green, and blue values of its color multiplied by the 
+     * value of the ambient light instead of the brightness.
+     * 
+     * @param brightness amount of light hitting the surface of a polygon
+     * @param ambient amount of ambient light hitting surfaces not facing light source
+     * @return Color to be applied to face of prism
+     */
     public Color chooseColor(double brightness, double ambient) {
         Color c = this.getColor();
         int red;
@@ -151,6 +180,8 @@ public class SwingPanel extends JPanel implements ActionListener {
     
     /**
      * Updates shapes on screen according to spinner matrix.
+     * <p>
+     * This method allows the shapes on screen to appear animated and 3D.
      * 
      * @param event ActionEvent object 
      */
