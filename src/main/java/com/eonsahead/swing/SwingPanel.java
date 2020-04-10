@@ -7,56 +7,38 @@ import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class SwingPanel extends JPanel implements ActionListener {
 
-    private double centerX = 0.0;
-    private double centerY = 0.0;
-    private final double minorRadius = 0.2;
-    private final double majorRadius = 0.3;
-
     private double phase = 0.0;
-    private Shape shape1;
-    private Shape shape2;
-
-    private Color color = Color.red;
+    private double ambient = 0.4;
+    private Color color = new Color(255, 1, 1);
+    private final Matrix4x4 spinner;
+    private final Vector4D illumination;
+    private final Prism prism;
     private Polygon3D poly1;
     private Polygon3D poly2;
-    private Matrix4x4 spinner;
-    private List<Shape> shapes;
-    private Shape rect;
-    private List<Rectangle> rectangles;
-
+    
     public SwingPanel() {
         Timer timer = new Timer(20, this);
         timer.start();
 
-//        int p = this.points;
-//        double x = this.centerX;
-//        double y = this.centerY;
-//        double r0 = this.minorRadius;
-//        double r1 = this.majorRadius;
-//        this.shape = makeStar(p, x, y, r0, r1);
-        this.poly1 = new Polygon3D(9, 0.6, 0);
-        this.poly2 = new Polygon3D(9, 0.6, 0.5);
+        this.prism = new Prism(9, 0.8, 0.6);
 
         Matrix4x4 a = new Matrix4x4();
-        a.rotationX(Math.PI / 1 * 0);
+        a.rotationX(Math.PI / 100);
 
         Matrix4x4 b = new Matrix4x4();
         b.rotationY(Math.PI / 100);
 
         Matrix4x4 c = new Matrix4x4();
-        c.rotationZ(Math.PI / 100 * 0);
+        c.rotationZ(Math.PI / 100);
 
         this.spinner = a.multiply(b).multiply(c);
+        this.illumination = (new Vector4D(1, 2, 4)).normalize();
     } // SwingPanel()
 
     public Color getColor() {
@@ -66,77 +48,58 @@ public class SwingPanel extends JPanel implements ActionListener {
     public void setColor(Color c) {
         this.color = c;
     } // setColor( Color )
+    
+    public Color chooseColor(double brightness, double ambient) {
+        Color c = this.getColor();
+        int red;
+        int green;
+        int blue;
+        if (brightness > 0) {
+            red = (int) (brightness * c.getRed());
+            green = (int) (brightness * c.getGreen());
+            blue = (int) (brightness * c.getBlue());
+        } // if
+        else {
+            red = (int) (ambient * c.getRed());
+            green = (int) (ambient * c.getGreen());
+            blue = (int) (ambient * c.getBlue());
+        } // else
+        return new Color(red, green, blue);
+    } // chooseColor(double, double)
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g;
-
         int w = this.getWidth();
         int h = this.getHeight();
-
-        AffineTransform transform1 = new AffineTransform();
-        AffineTransform transform2 = new AffineTransform();
-
-        AffineTransform rotation = new AffineTransform();
-        rotation.setToRotation(this.phase);
-
+        AffineTransform transform = new AffineTransform();
         AffineTransform scaling = new AffineTransform();
         scaling.setToScale(w / 2, h / 2);
-
-        AffineTransform translation1 = new AffineTransform();
+        AffineTransform translation = new AffineTransform();
         double cx1 = 1.0;
         double cy1 = 1.0;
-        translation1.setToTranslation(cx1, cy1);
-        AffineTransform translation2 = new AffineTransform();
-        double cx2 = 1.0;
-        double cy2 = 1.0;
-        translation2.setToTranslation(cx2, cy2);
-
-        transform1.concatenate(scaling);
-        transform1.concatenate(translation1);
-        transform1.concatenate(rotation);
-
-        transform2.concatenate(scaling);
-        transform2.concatenate(translation2);
-        transform2.concatenate(rotation);
-
-        this.shape1 = poly1.getShape();
-        this.shape2 = poly2.getShape();
-
-        Shape s1 = transform1.createTransformedShape(this.shape1);
-        Shape s2 = transform2.createTransformedShape(this.shape2);
-
-        if (poly1.getMinZ() < poly2.getMinZ()) {
-            g2D.setColor(this.getColor());
-            g2D.fill(s1);
-            for (int side = 0; side < poly1.getSize() + 1; side++) {
-                Rectangle r = new Rectangle(poly1, poly2, side);
-                Shape rectShape = r.getShape();
-                g2D.setColor(Color.green);
-                g2D.fill(transform1.createTransformedShape(rectShape));
-            } // for
-            g2D.setColor(Color.blue);
-            g2D.fill(s2);
-        } // if
-        else {
-            g2D.setColor(Color.blue);
-            g2D.fill(s2);
-            for (int side = 0; side < poly1.getSize() + 1; side++) {
-                Rectangle r = new Rectangle(poly1, poly2, side);
-                Shape rectShape = r.getShape();
-                g2D.setColor(Color.green);
-                g2D.fill(transform1.createTransformedShape(rectShape));
-            } // for
-            g2D.setColor(this.getColor());
-            g2D.fill(s1);
-        } // else
+        translation.setToTranslation(cx1, cy1);
+        transform.concatenate(scaling);
+        transform.concatenate(translation);
+       
+        List<Polygon3D> faces = this.prism.getFaces();
+        for (Polygon3D poly : faces) {
+            Shape shape = transform.createTransformedShape(poly.getShape());
+            
+            Vector4D normal = poly.getNormal();
+            
+            if (normal.get(2) > 0) {
+                double brightness = normal.dotProduct(illumination);
+                g2D.setColor(chooseColor(brightness, ambient));
+                g2D.fill(shape);
+            } // if
+        } // for
     } // paintComponent( Graphics )
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        this.poly1.transform(spinner);
-        this.poly2.transform(spinner);
+        this.prism.transform(spinner);
         this.repaint();
     } // actionPerformed( ActionEvent )
 } // SwingPanel
