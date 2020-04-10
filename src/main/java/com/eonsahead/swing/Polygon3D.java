@@ -61,7 +61,7 @@ public class Polygon3D {
     /**
      * Retrieves the coordinates of a specified vertex
      * 
-     * @param vertex vertex to be retreived
+     * @param vertex vertex to be retrieved
      * @return vector representation of vertex
      */
     public Vector4D getVertex(int vertex) {
