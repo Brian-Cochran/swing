@@ -13,32 +13,32 @@ import javax.swing.Timer;
 
 public class SwingPanel extends JPanel implements ActionListener {
 
-    private final double ambient = 0.5;
+    private final double ambient = 0.2;
     private Color color = new Color(0, 255, 100);
     private final Matrix4x4 spinner;
     private final Vector4D illumination;
     private final Polygon3D polyTop;
     private final Polygon3D polyBottom;
-    private final int NUM_SIDES = 50;
+    private final int NUM_SIDES = 100;
 
     public SwingPanel() {
         Timer timer = new Timer(20, this);
         timer.start();
         
         this.polyTop = new Polygon3D(NUM_SIDES, 0.8, 0.5, 0);
-        this.polyBottom = new Polygon3D(NUM_SIDES, 0.8, -0.5, 1);
+        this.polyBottom = new Polygon3D(NUM_SIDES, 0.0, -0.5, 1);
 
         Matrix4x4 a = new Matrix4x4();
-        a.rotationX(Math.PI / 100 * 0);
+        a.rotationX(Math.PI / 100);
 
         Matrix4x4 b = new Matrix4x4();
         b.rotationY(Math.PI / 100);
 
         Matrix4x4 c = new Matrix4x4();
-        c.rotationZ(Math.PI / 100 * 0);
+        c.rotationZ(Math.PI / 100);
 
         this.spinner = a.multiply(b).multiply(c);
-        this.illumination = (new Vector4D(0, 0, 3)).normalize();
+        this.illumination = (new Vector4D(2, 2, 2)).normalize();
     } // SwingPanel()
 
     public Color getColor() {
@@ -55,9 +55,9 @@ public class SwingPanel extends JPanel implements ActionListener {
         int green;
         int blue;
         if (brightness > 0) {
-            red = (int) (brightness * c.getRed());
-            green = (int) (brightness * c.getGreen());
-            blue = (int) (brightness * c.getBlue());
+            red = (int) (brightness * c.getRed() * 1.5);
+            green = (int) (brightness * c.getGreen() * 1.5);
+            blue = (int) (brightness * c.getBlue() * 1.5);
         } // if
         else {
             red = (int) (ambient * c.getRed());
