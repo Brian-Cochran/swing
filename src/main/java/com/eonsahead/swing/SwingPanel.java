@@ -11,6 +11,12 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+/**
+ * The SwingPanel class contains methods for drawing on and updating the Swing window.
+ * 
+ * @author Brian Cochran
+ * @version 4/10/2020
+ */
 public class SwingPanel extends JPanel implements ActionListener {
 
     private final double ambient = 0.2;
@@ -23,7 +29,10 @@ public class SwingPanel extends JPanel implements ActionListener {
 
     // set to 1 for a prism, 2 for a cone, and 3 for an antiprism
     private final int shape = 1;
-
+    
+    /**
+     * SwingPanel constructor
+     */
     public SwingPanel() {
         Timer timer = new Timer(20, this);
         timer.start();
@@ -71,7 +80,14 @@ public class SwingPanel extends JPanel implements ActionListener {
         } // else
         return new Color(red, green, blue);
     } // chooseColor(double, double)
-
+    
+    /**
+     * Draws and scales shapes on Swing window.
+     * <p>
+     * Depending on the shape variable, this method draws a prism or cone.
+     * 
+     * @param g Graphics object
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -132,7 +148,12 @@ public class SwingPanel extends JPanel implements ActionListener {
             } // for
         } // else if
     } // paintComponent( Graphics )
-
+    
+    /**
+     * Updates shapes on screen according to spinner matrix.
+     * 
+     * @param event ActionEvent object 
+     */
     @Override
     public void actionPerformed(ActionEvent event) {
         //this.polyTop.transform(spinner);
