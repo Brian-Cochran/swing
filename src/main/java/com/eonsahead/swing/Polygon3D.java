@@ -42,6 +42,10 @@ public class Polygon3D {
     public Vector4D getVertex(int vertex) {
         return this.vertices.get(vertex);
     } // getVertex(int)
+    
+    public List<Vector4D> getVertices() {
+        return this.vertices;
+    } // getVertices()
 
     public void transform(Matrix4x4 m) {
         for (Vector4D u : this.vertices) {
