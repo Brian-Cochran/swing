@@ -22,13 +22,13 @@ import javax.swing.Timer;
  */
 public class SwingPanel extends JPanel implements ActionListener {
 
-    private final double ambient = 0.2;
+    private final double ambient = 0.1;
     private Color color = new Color(0, 255, 100);
     private final Matrix4x4 spinner;
     private final Vector4D illumination;
     private final Prism prism;
     private final Cone cone;
-    private final int NUM_SIDES = 50;
+    private final int NUM_SIDES = 3;
 
     // set to 1 for a prism, 2 for a cone, and 3 for an antiprism
     private final int shape = 1;
@@ -49,13 +49,13 @@ public class SwingPanel extends JPanel implements ActionListener {
         this.cone = new Cone(0.8, 1);
 
         Matrix4x4 a = new Matrix4x4();
-        a.rotationX(Math.PI / 400);
+        a.rotationX(Math.PI / 400 * 0);
 
         Matrix4x4 b = new Matrix4x4();
         b.rotationY(Math.PI / 400);
 
         Matrix4x4 c = new Matrix4x4();
-        c.rotationZ(Math.PI / 400);
+        c.rotationZ(Math.PI / 400 * 0);
 
         this.spinner = a.multiply(b).multiply(c);
         this.illumination = (new Vector4D(1, 1, 1)).normalize();
@@ -97,7 +97,7 @@ public class SwingPanel extends JPanel implements ActionListener {
         int red;
         int green;
         int blue;
-        if (brightness > 0) {
+        if (brightness > 0.1) {
             red = (int) (brightness * c.getRed());
             green = (int) (brightness * c.getGreen());
             blue = (int) (brightness * c.getBlue());
