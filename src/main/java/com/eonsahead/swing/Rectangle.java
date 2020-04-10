@@ -58,16 +58,6 @@ public class Rectangle {
         return result.normalize();
     } // getNormal()
     
-    public double getMinZ() {
-        double minZ = this.getVertex(0).get(2);
-        for (int i = 1; i < 4; i++) {
-            if (this.getVertex(i).get(2) < minZ) {
-                minZ = this.getVertex(i).get(2);
-            } // if
-        } // for
-        return minZ;
-    } // getMinZ()
-    
     public void transform(Matrix4x4 m) {
         for (Vector4D u : this.vertices) {
             u.set(m.multiply(u));
