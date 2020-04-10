@@ -5,10 +5,27 @@ import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Rectangle class creates, traces, and transforms the rectangles to be the 
+ * sides of prisms and cones.
+ * 
+ * @author Brian Cochran
+ * @version 4/10/2020
+ */
 public class Rectangle {
 
     private List<Vector4D> vertices = new ArrayList<>();
-
+    
+    /**
+     * Rectangle constructor.
+     * <p>
+     * Creates a rectangle to be the side of a polyhedron using two Polygon3D 
+     * objects.
+     * 
+     * @param p1 top polygon
+     * @param p2 bottom polygon
+     * @param side number of side to be created
+     */
     public Rectangle(Polygon3D p1, Polygon3D p2, int side) {
         if (p1.getSize() == p2.getSize()) {
             if (side == p1.getSize()) {
@@ -26,6 +43,11 @@ public class Rectangle {
         } // if
     } // getPoints(Polygon3D, Polygon3D)
     
+    /**
+     * Draws path of rectangle
+     * 
+     * @return rectangle represented by a path
+     */
     public Shape getShape(){
         GeneralPath path = new GeneralPath();
         
@@ -44,14 +66,30 @@ public class Rectangle {
         return path;
     } // getShape()
     
+    /**
+     * Retrieves the list of vertices of a rectangle
+     * 
+     * @return list of vector representations of vertices
+     */
     public List<Vector4D> getVertices() {
         return this.vertices;
     } // getVertices()
     
+    /**
+     * Retrieves a vertex of a rectangle
+     * 
+     * @param vertex vertex to be retrieved
+     * @return vector representation of the vertex
+     */
     public Vector4D getVertex(int vertex) {
         return this.vertices.get(vertex);
     } // getVertex(int)
     
+    /**
+     * Retrieves the normal vector of a rectangle
+     * 
+     * @return normal vector
+     */
     public Vector4D getNormal() {
         Vector4D v0 = this.getVertex(0);
         Vector4D v1 = this.getVertex(1);
@@ -62,6 +100,11 @@ public class Rectangle {
         return result.normalize();
     } // getNormal()
     
+    /**
+     * Transforms vertices according to a 4x4 matrix
+     * 
+     * @param m 4x4 matrix
+     */
     public void transform(Matrix4x4 m) {
         for (Vector4D u : this.vertices) {
             u.set(m.multiply(u));
