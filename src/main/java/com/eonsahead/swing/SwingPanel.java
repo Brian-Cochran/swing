@@ -14,19 +14,20 @@ import javax.swing.Timer;
 public class SwingPanel extends JPanel implements ActionListener {
 
     private double phase = 0.0;
-    private double ambient = 0.4;
-    private Color color = new Color(255, 1, 1);
+    private double ambient = 0.5;
+    private Color color = new Color(0, 255, 100);
     private final Matrix4x4 spinner;
     private final Vector4D illumination;
-    private final Prism prism;
-    private Polygon3D poly1;
-    private Polygon3D poly2;
-    
+    private Polygon3D polyTop;
+    private Polygon3D polyBottom;
+    private int NUM_SIDES = 50;
+
     public SwingPanel() {
         Timer timer = new Timer(20, this);
         timer.start();
-
-        this.prism = new Prism(9, 0.8, 0.6);
+        
+        this.polyTop = new Polygon3D(NUM_SIDES, 0.8, 0.5, 0);
+        this.polyBottom = new Polygon3D(NUM_SIDES, 0.8, -0.5, 1);
 
         Matrix4x4 a = new Matrix4x4();
         a.rotationX(Math.PI / 100);
@@ -38,7 +39,7 @@ public class SwingPanel extends JPanel implements ActionListener {
         c.rotationZ(Math.PI / 100);
 
         this.spinner = a.multiply(b).multiply(c);
-        this.illumination = (new Vector4D(1, 2, 4)).normalize();
+        this.illumination = (new Vector4D(0, 0, 3)).normalize();
     } // SwingPanel()
 
     public Color getColor() {
@@ -48,7 +49,7 @@ public class SwingPanel extends JPanel implements ActionListener {
     public void setColor(Color c) {
         this.color = c;
     } // setColor( Color )
-    
+
     public Color chooseColor(double brightness, double ambient) {
         Color c = this.getColor();
         int red;
@@ -82,13 +83,29 @@ public class SwingPanel extends JPanel implements ActionListener {
         translation.setToTranslation(cx1, cy1);
         transform.concatenate(scaling);
         transform.concatenate(translation);
-       
-        List<Polygon3D> faces = this.prism.getFaces();
-        for (Polygon3D poly : faces) {
-            Shape shape = transform.createTransformedShape(poly.getShape());
-            
-            Vector4D normal = poly.getNormal();
-            
+
+        Vector4D normal;
+        Shape shape;
+
+        shape = transform.createTransformedShape(polyTop.getShape());
+        normal = polyTop.getNormal();
+        if (normal.get(2) > 0) {
+            System.out.println("test");
+            double brightness = normal.dotProduct(illumination);
+            g2D.setColor(chooseColor(brightness, ambient));
+            g2D.fill(shape);
+        } // if
+        shape = transform.createTransformedShape(polyBottom.getShape());
+        normal = polyBottom.getNormal();
+        if (normal.get(2) > 0) {
+            double brightness = normal.dotProduct(illumination);
+            g2D.setColor(chooseColor(brightness, ambient));
+            g2D.fill(shape);
+        } // if
+        for (int side = 0; side < polyTop.getSize() + 1; side++) {
+            Rectangle r = new Rectangle(polyTop, polyBottom, side);
+            shape = transform.createTransformedShape(r.getShape());
+            normal = r.getNormal();
             if (normal.get(2) > 0) {
                 double brightness = normal.dotProduct(illumination);
                 g2D.setColor(chooseColor(brightness, ambient));
@@ -99,7 +116,9 @@ public class SwingPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        this.prism.transform(spinner);
+        //this.prism.transform(spinner);
+        this.polyTop.transform(spinner);
+        this.polyBottom.transform(spinner);
         this.repaint();
     } // actionPerformed( ActionEvent )
 } // SwingPanel
