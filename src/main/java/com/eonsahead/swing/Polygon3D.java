@@ -69,16 +69,6 @@ public class Polygon3D {
         path.closePath();
         return path;
     } // getShape()
-
-    public double getMinZ() {
-        double minZ = this.getVertex(0).get(2);
-        for (int vertex = 1; vertex < this.vertices.size(); vertex++) {
-            if (this.getVertex(vertex).get(2) < minZ) {
-                minZ = this.getVertex(vertex).get(2);
-            } // if
-        } // for
-        return minZ;
-    } // getMinZ()
     
     public Vector4D getNormal() {
         Vector4D v0 = this.getVertex(0);
