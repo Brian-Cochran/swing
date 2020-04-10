@@ -13,6 +13,13 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+/**
+ * Creates a window that displays the panel created in the SwingPanel class as 
+ * well as menus.
+ * 
+ * @author Brian Cochran
+ * @version 4/10/2020
+ */
 public class Swing extends JFrame implements ActionListener {
 
     private final int FRAME_WIDTH = 512;
@@ -27,7 +34,12 @@ public class Swing extends JFrame implements ActionListener {
     private static final List<Color> bgPalette = new ArrayList<>();
     private static final List<Color> fgPalette = new ArrayList<>();
     private final SwingPanel panel;
-
+    
+    /**
+     * Swing constructor.
+     * <p>
+     * This constructor creates a window with menus.
+     */
     public Swing() {
         this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         this.setTitle(FRAME_TITLE);
@@ -85,7 +97,12 @@ public class Swing extends JFrame implements ActionListener {
 
         this.setVisible(true);
     } // Swing()
-
+    
+    /**
+     * Checks for clicks on the menu and changes settings accordingly.
+     * 
+     * @param event User clicks on menu component
+     */
     @Override
     public void actionPerformed(ActionEvent event) {
         String actionCommand = event.getActionCommand();
@@ -103,7 +120,12 @@ public class Swing extends JFrame implements ActionListener {
             this.panel.setColor(fgPalette.get(index));
         } // else if
     } // actionPerformed( ActionEvent )
-
+    
+    /**
+     * Creates window and starts drawing and animating shapes.
+     * 
+     * @param args String array containing command-line arguments
+     */
     public static void main(String[] args) {
         Swing swing = new Swing();
     } // main( String [] )
