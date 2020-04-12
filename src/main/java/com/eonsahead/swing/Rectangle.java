@@ -41,7 +41,7 @@ public class Rectangle {
                 this.vertices.add(p2.getVertex(side));
             } // else
         } // if
-    } // getPoints(Polygon3D, Polygon3D)
+    } // Rectangle(Polygon3D, Polygon3D, int)
     
     /**
      * Draws path of rectangle
@@ -86,7 +86,7 @@ public class Rectangle {
     } // getVertex(int)
     
     /**
-     * Retrieves the normal vector of a rectangle
+     * Calculates the normal vector of a rectangle
      * 
      * @return normal vector
      */
