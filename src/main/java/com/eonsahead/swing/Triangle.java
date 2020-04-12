@@ -10,10 +10,28 @@ import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Triangle class creates, traces, and transforms the triangles to be the 
+ * sides of an antiprism.
+ * 
+ * @author Brian Cochran
+ * @version 4/12/2020
+ */
 public class Triangle {
     
     private List<Vector4D> vertices = new ArrayList<>();
     
+    /**
+     * Triangle constructor.
+     * <p>
+     * Creates a triangle to be the side of an antiprism using two Polygon3D 
+     * objects.
+     * 
+     * @param p1 top polygon
+     * @param p2 bottom polygon
+     * @param side number of side to be created
+     * @param mode decides how triangles will be oriented
+     */
     public Triangle(Polygon3D p1, Polygon3D p2, int side, int mode) {
         if (p1.getSize() == p2.getSize()) {
             if (mode == 0) {
@@ -43,6 +61,11 @@ public class Triangle {
         } // if
     } // Triangle(Polygon3D, Polygon3D, int)
     
+    /**
+     * Draws path of triangle
+     * 
+     * @return triangle represented by a path
+     */
     public Shape getShape() {
         GeneralPath path = new GeneralPath();
         
@@ -61,14 +84,30 @@ public class Triangle {
         return path;
     } // getShape()
     
+    /**
+     * Retrieves a list of vertices of a triangle
+     * 
+     * @return list of vector representations of vertices
+     */
     public List<Vector4D> getVertices() {
         return this.vertices;
     } // getVertices()
     
+    /**
+     * Retrieves a vertex of a triangle
+     * 
+     * @param vertex vertex to be retrieved
+     * @return vector representation of the vertex
+     */
     public Vector4D getVertex(int vertex) {
         return this.vertices.get(vertex);
     } // getVertex(int)
-     
+    
+    /**
+     * Calculates the normal vector of a triangle
+     * 
+     * @return normal vector
+     */
     public Vector4D getNormal() {
         Vector4D v0 = this.getVertex(0);
         Vector4D v1 = this.getVertex(1);
@@ -79,6 +118,11 @@ public class Triangle {
         return result.normalize();
     } //getNormal()
     
+    /**
+     * Transforms a triangle according to a 4x4 matrix
+     * 
+     * @param m 4x4 matrix
+     */
     public void transform(Matrix4x4 m) {
         for (Vector4D u : this.vertices) {
             u.set(m.multiply(u));
