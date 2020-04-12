@@ -111,7 +111,7 @@ public class Polygon3D {
     } // getShape()
     
     /**
-     * Retrieves the normal vector of a polygon.
+     * Calculates the normal vector of a polygon.
      * 
      * @return normal vector
      */
