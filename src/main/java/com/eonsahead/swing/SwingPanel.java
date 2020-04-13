@@ -33,7 +33,7 @@ public class SwingPanel extends JPanel implements ActionListener {
     private final Matrix4x4 initialSpin;
     private boolean decideTransform = true;
 
-    // set to 1 for a prism, 2 for a cone, and 3 for an antiprism
+    // set to 1 for a prism, 2 for a cone, or 3 for an antiprism
     private final int shape = 3;
 
     /**
@@ -56,7 +56,7 @@ public class SwingPanel extends JPanel implements ActionListener {
         a.rotationX(Math.PI / 400);
 
         Matrix4x4 b = new Matrix4x4();
-        b.rotationY(Math.PI / 400);
+        b.rotationY(Math.PI / 400 * 0);
 
         Matrix4x4 c = new Matrix4x4();
         c.rotationZ(Math.PI / 400);
@@ -238,8 +238,6 @@ public class SwingPanel extends JPanel implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent event) {
-        //this.polyTop.transform(spinner);
-        //this.polyBottom.transform(spinner);
         this.prism.transform(spinner);
         this.cone.transform(spinner);
         this.antiprism.transform(spinner);
