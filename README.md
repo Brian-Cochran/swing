@@ -12,6 +12,6 @@ Leon Tabak: <a href=https://github.com/leontabak>GitHub Link</a>
 <p>
 <b>References</b>
 <p>
-<a href=https://https://www.w3schools.com/>w3schools</a>
+<a href=https://https://www.w3schools.com/>w3schools</a><br>
 CSC-144 class
 
