@@ -36,6 +36,9 @@ public class AntiPrism {
      */
     public AntiPrism(int numSides, double radiusTop, double radiusBottom, double height) {
         Polygon3D polyTop = new Polygon3D(numSides, radiusTop, height / 2, 1);
+        Matrix4x4 initialSpin = new Matrix4x4();
+        initialSpin.rotationZ(Math.PI / numSides);
+        polyTop.transform(initialSpin);
         this.faces.add(polyTop);
         this.vertices.addAll(polyTop.getVertices());
         
